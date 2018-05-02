@@ -34,6 +34,10 @@ void inserir(fila_ordenada_t* fila, aviao_t* dado) {
     if (fila->n_elementos == 0) {
         fila->primeiro = el;
         fila->ultimo = el;
+    } else if (dado->combustivel <= 10) {
+        elemento_t* primeiro_antigo = fila->primeiro;
+        fila->primeiro = el;
+        fila->primeiro->proximo = primeiro_antigo;
     } else {
         elemento_t* ultimo = fila->ultimo;
         ultimo->proximo = el;
@@ -46,6 +50,7 @@ aviao_t* remover(fila_ordenada_t* fila) {
     elemento_t* el = fila->primeiro;
     aviao_t* aviao = el->dado;
     fila->primeiro = el->proximo;
+    fila->n_elementos--;
     free(el);
     return aviao;
 }

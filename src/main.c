@@ -62,7 +62,7 @@ int main (int argc, char** argv) {
         n_esteiras = atoi(argv[++i]);
         t_simulacao = atoi(argv[++i]);
 
-    } else { // Número incorreto de argumentos
+    } else {
         printf("Todas as entradas são inteiros positivos!!\nUso:\n");
         printf("./aeroporto  NOVO_AVIAO_MIN  NOVO_AVIAO_MAX\n");
         printf("COMBUSTIVEL_MIN COMBUSTIVEL_MAX\n");

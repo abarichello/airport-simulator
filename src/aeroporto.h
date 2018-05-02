@@ -1,9 +1,9 @@
 #pragma once
 
 #include "aviao.h"
+#include "fila.h"
 
 typedef size_t tempo_t;
-
 typedef struct {
     size_t n_pistas;
     size_t n_portoes;
@@ -13,16 +13,11 @@ typedef struct {
     tempo_t t_remover_bagagens;
     tempo_t t_inserir_bagagens;
     tempo_t t_bagagens_esteira;
-    // Adicionar aqui outros atributos que você achar necessários.
-    // Exemplo: esteiras, portões, etc...
+    fila_ordenada_t* fila_pouso;
 } aeroporto_t;
 
-/**
- * Esta função deve fazer a alocação dinâmica de um aeroporto (malloc)
- * e atribuir os parâmetros (recebidos por um array de unsigned ints)
- * aos atributos da struct aeroporto
- **/
 aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
+int finalizar_aeroporto (aeroporto_t* aeroporto);
 
 /**
  * Esta função deve ser chamada quando um novo avião se aproxima
@@ -69,9 +64,3 @@ void adicionar_bagagens_esteira (aeroporto_t* aeroporto, aviao_t* aviao);
  * ter sua execução terminada.
  **/
 void decolar_aviao (aeroporto_t* aeroporto, aviao_t* aviao);
-
-/**
- * Esta função deve desalocar todos os recursos previamente
- * alocados pelo aeroporto. Retorna 1 caso bem sucedido.
- **/
-int finalizar_aeroporto (aeroporto_t* aeroporto);
