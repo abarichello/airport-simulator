@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "aeroporto.h"
+#include "fila.h"
 
 #define NOVO_AVIAO_MIN 30
 #define NOVO_AVIAO_MAX 120
