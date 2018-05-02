@@ -95,7 +95,6 @@ int main (int argc, char** argv) {
     // Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
     // Lembre-se de implementá-las num novo arquivo "aeroporto.c"
 
-
     finalizar_aeroporto(meu_aeroporto);
     return 1;
 }

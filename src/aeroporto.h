@@ -1,5 +1,4 @@
-#ifndef AEROPORTO_H
-#define AEROPORTO_H
+#pragma once
 
 #include "aviao.h"
 
@@ -17,7 +16,6 @@ typedef struct {
     // Adicionar aqui outros atributos que você achar necessários.
     // Exemplo: esteiras, portões, etc...
 } aeroporto_t;
-
 
 /**
  * Esta função deve fazer a alocação dinâmica de um aeroporto (malloc)
@@ -77,5 +75,3 @@ void decolar_aviao (aeroporto_t* aeroporto, aviao_t* aviao);
  * alocados pelo aeroporto. Retorna 1 caso bem sucedido.
  **/
 int finalizar_aeroporto (aeroporto_t* aeroporto);
-
-#endif

@@ -6,7 +6,7 @@
  * Descrições em aviao.h
  **/
 
-aviao_t * aloca_aviao (size_t combustivel, size_t id) {
+aviao_t* aloca_aviao (size_t combustivel, size_t id) {
     return NULL;
 }
 

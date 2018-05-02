@@ -1,7 +1,7 @@
 ## Makefile da Simulacao de aeroporto.
 CC=gcc
 CFLAGS=-Wall -I. -lpthread -std=gnu11
-EXEC=simulacao
+EXEC=simulacao.out
 
 all: $(EXEC)
 
