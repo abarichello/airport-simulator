@@ -1,6 +1,6 @@
 #pragma once
 
-#include <pthread.h>
+#include "stdafx.h"
 
 typedef struct {
     pthread_t thread;

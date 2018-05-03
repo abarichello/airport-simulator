@@ -1,5 +1,6 @@
 #pragma once
 
+#include "stdafx.h"
 #include "aviao.h"
 #include "fila.h"
 
@@ -14,16 +15,14 @@ typedef struct {
     tempo_t t_inserir_bagagens;
     tempo_t t_bagagens_esteira;
     fila_ordenada_t* fila_pouso;
+    sem_t pistas;
+    sem_t portoes;
+    sem_t esteiras[];
 } aeroporto_t;
+
 
 aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
 int finalizar_aeroporto (aeroporto_t* aeroporto);
-
-/**
- * Esta função deve ser chamada quando um novo avião se aproxima
- * do aeroporto. Nesta situação um avião deve pousar em seguida,
- * mas somente se houver uma pista livre para ele.
- **/
 void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao);
 
 /**

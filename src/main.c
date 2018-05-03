@@ -1,7 +1,4 @@
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "stdafx.h"
 #include "aeroporto.h"
 #include "fila.h"
 

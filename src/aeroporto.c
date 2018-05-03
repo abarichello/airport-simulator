@@ -12,6 +12,9 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
     aeroporto->t_bagagens_esteira = args[7];
 
     aeroporto->fila_pouso = criar_fila();
+    sem_init(&aeroporto->pistas, 0, aeroporto->n_pistas);
+    sem_init(&aeroporto->portoes, 0, aeroporto->n_portoes);
+
     return aeroporto;
 }
 
@@ -25,11 +28,15 @@ void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao) {
 }
 
 void pousar_aviao (aeroporto_t* aeroporto, aviao_t* aviao) {
-
+    sem_wait(&aeroporto->pistas);
+    aviao_t* pouso = remover(aeroporto->fila_pouso);
+    sleep(aeroporto->t_pouso_decolagem);
+    sem_post(&aeroporto->pistas);
 }
 
 void acoplar_portao (aeroporto_t* aeroporto, aviao_t* aviao) {
-
+    sem_wait(&aeroporto->portoes);
+    sem_post(&aeroporto->portoes);
 }
 
 void transportar_bagagens (aeroporto_t* aeroporto, aviao_t* aviao) {

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "aviao.h"
 #include "fila.h"
 
