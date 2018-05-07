@@ -9,4 +9,9 @@ void main() {
     inserir(fila, aviao0);
     inserir(fila, aviao1);
     printf("Primeiro: %d\nUltimo: %d\n", fila->primeiro->dado->id, fila->ultimo->dado->id);
+
+    srand(time(NULL));
+    for (size_t i = 0; i < 200; ++i) {
+        printf("%d\n", rand() % 100 + 1);
+    }
 }

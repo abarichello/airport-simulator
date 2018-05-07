@@ -1,5 +1,6 @@
 #include "aeroporto.h"
 
+
 aeroporto_t* iniciar_aeroporto(size_t* args, size_t n_args) {
     aeroporto_t* aeroporto = malloc(sizeof(aeroporto_t));
     aeroporto->n_pistas = args[0];

@@ -20,45 +20,12 @@ typedef struct {
     sem_t* esteiras;
 } aeroporto_t;
 
-aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
-int finalizar_aeroporto (aeroporto_t* aeroporto);
-void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao);
+aeroporto_t* iniciar_aeroporto(size_t* args, size_t n_args);
+int finalizar_aeroporto(aeroporto_t* aeroporto);
 
-/**
- * Esta função deve fazer com que o aviao pouse, utilizando uma pista livre.
- * Ela não pode ser chamada se não houver pistas livres. Em seguida o avião
- * deve se acoplar a um portão, caso haja um livre, se não houver, ele deve
- * esperar.
- **/
-void pousar_aviao (aeroporto_t* aeroporto, aviao_t* aviao);
-
-/**
- * Esta função deve acoplar um avião a um portão de embarque livre.
- * Ela não deve ser chamada caso não hajam portões livres. Em seguida, o
- * o avião deve transportar suas bagagens para fora e receber novas bagagens.
- * Um avião não pode decolar sem receber novas bagagens.
- **/
-void acoplar_portao (aeroporto_t* aeroporto, aviao_t* aviao);
-
-/**
- * Esta função deve levar as bagagens de um avião para uma esteira e
- * colocar novas bagagens num avião para que ele seja liberado para
- * decolagem. Um avião não pode decolar sem receber novas bagagens.
- * Um avião não pode receber novas bagagens sem colocar as antigas
- * em uma esteira.
- **/
-void transportar_bagagens (aeroporto_t* aeroporto, aviao_t* aviao);
-
-/**
- * Esta função deve colocar novas bagagens numa esteira, caso ela
- * esteja disponível. A esteira ficará ocupada enquanto houverem
- * bagagens nela.
- **/
-void adicionar_bagagens_esteira (aeroporto_t* aeroporto, aviao_t* aviao);
-
-/**
- * Esta função deve fazer com que um avião decole, caso haja
- * uma pista disponível para tal. Um avião que decolar deve
- * ter sua execução terminada.
- **/
-void decolar_aviao (aeroporto_t* aeroporto, aviao_t* aviao);
+void aproximacao_aeroporto(aeroporto_t* aeroporto, aviao_t* aviao);
+void pousar_aviao(aeroporto_t* aeroporto, aviao_t* aviao);
+void acoplar_portao(aeroporto_t* aeroporto, aviao_t* aviao);
+void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao);
+void adicionar_bagagens_esteira(aeroporto_t* aeroporto, aviao_t* aviao);
+void decolar_aviao(aeroporto_t* aeroporto, aviao_t* aviao);
