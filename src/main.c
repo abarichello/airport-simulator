@@ -2,19 +2,19 @@
 #include "aeroporto.h"
 #include "fila.h"
 
-#define NOVO_AVIAO_MIN 5
-#define NOVO_AVIAO_MAX 20
+#define NOVO_AVIAO_MIN 30
+#define NOVO_AVIAO_MAX 120
 #define COMBUSTIVEL_MIN 1
-#define COMBUSTIVEL_MAX 10
+#define COMBUSTIVEL_MAX 100
 #define TEMPO_POUSO_DECOLAGEM 40
 #define TEMPO_REMOVER_BAGAGENS 90
 #define TEMPO_INSERIR_BAGAGENS 110
 #define TEMPO_BAGAGENS_ESTEIRA 200
-#define TEMPO_SIMULACAO 10000
+#define TEMPO_SIMULACAO 1000
 
 typedef struct {
     aeroporto_t* aeroporto;
-    aviao_t* aviao
+    aviao_t* aviao;
 } unidade_t;
 
 void* thread_aviao(void* arg) {
@@ -29,6 +29,8 @@ void* thread_aviao(void* arg) {
 }
 
 int main(int argc, char** argv) {
+    srand(time(NULL));
+
     size_t t_novo_aviao_min, t_novo_aviao_max;
     size_t t_pouso_decolagem;
     size_t t_remover_bagagens, t_inserir_bagagens;
@@ -89,7 +91,7 @@ int main(int argc, char** argv) {
     printf("Número de portões de embarque: %lu\n", n_portoes);
     printf("Tempo de inserção (%lu) e remoção (%lu) de bagagens\n", t_inserir_bagagens, t_remover_bagagens);
     printf("Número de esteiras: %lu, com %lu aviões por esteira\n", n_esteiras, n_max_avioes_esteira);
-    printf("Tempo das bagagens nas esteiras: %lu\n", t_bagagens_esteira);
+    printf("Tempo das bagagens nas esteiras: %lu\n\n", t_bagagens_esteira);
 
     n_args = 8;
     size_t args[8] = {n_pistas, n_portoes, n_esteiras,
@@ -98,18 +100,27 @@ int main(int argc, char** argv) {
                       t_inserir_bagagens, t_bagagens_esteira};
 
     aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
+    pthread_t thread_vector[100];
 
-    while (1) {
-        srand(time(NULL));
-        int id = 0;
-        int rnd = rand() % COMBUSTIVEL_MAX + COMBUSTIVEL_MIN;
-        aviao_t* aviao = aloca_aviao(rnd, id++);
-        unidade_t* unidade = malloc(sizeof(unidade_t));
-        unidade->aeroporto = meu_aeroporto;
-        unidade->aviao = aviao;
-        // pthread_create();
+    tempo_t tempo = 0;
+    tempo_t tempo_loop = 0;
+    tempo_t proximo_aviao = rand() % t_novo_aviao_max + t_novo_aviao_min;
+
+    int id = 0;
+    while (tempo < t_simulacao) {
+        if (tempo_loop >= proximo_aviao) {
+            int rnd = rand() % p_combustivel_max + p_combustivel_min;
+            aviao_t* aviao = aloca_aviao(rnd, id);
+            unidade_t* unidade = malloc(sizeof(unidade_t));
+            unidade->aeroporto = meu_aeroporto;
+            unidade->aviao = aviao;
+            pthread_create(&thread_vector[id++], NULL, thread_aviao, (void*)unidade);
+            proximo_aviao = tempo_loop + rand() % t_novo_aviao_max + t_novo_aviao_min;
+        }
+        tempo_loop++;
+        tempo++;
     }
 
     finalizar_aeroporto(meu_aeroporto);
-    return 1;
+    return 0;
 }

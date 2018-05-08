@@ -5,13 +5,10 @@ void main() {
     fila_ordenada_t* fila = criar_fila();
     aviao_t* aviao0 = aloca_aviao(100, 0);
     aviao_t* aviao1 = aloca_aviao(50, 1);
+    aviao_t* aviao2 = aloca_aviao(10, 2);
 
     inserir(fila, aviao0);
     inserir(fila, aviao1);
+    inserir(fila, aviao2);
     printf("Primeiro: %d\nUltimo: %d\n", fila->primeiro->dado->id, fila->ultimo->dado->id);
-
-    srand(time(NULL));
-    for (size_t i = 0; i < 200; ++i) {
-        printf("%d\n", rand() % 100 + 1);
-    }
 }

@@ -30,18 +30,24 @@ int finalizar_aeroporto(aeroporto_t* aeroporto) {
 }
 
 void aproximacao_aeroporto(aeroporto_t* aeroporto, aviao_t* aviao) {
+    printf(" - Aviao %lu entrou na fila na posição %lu com [%lu] Fuel.\n",
+           aviao->id, aeroporto->fila_pouso->n_elementos, aviao->combustivel);
     inserir(aeroporto->fila_pouso, aviao);
 }
 
 void pousar_aviao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->pistas);
-    aviao_t* pouso = remover(aeroporto->fila_pouso);
-    sleep(aeroporto->t_pouso_decolagem);
+    printf(" = Aviao %lu pousou.\n", aviao->id);
+    remover(aeroporto->fila_pouso);
+    // sleep(aeroporto->t_pouso_decolagem);
     sem_post(&aeroporto->pistas);
 }
 
 void acoplar_portao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->portoes);
+    int portao = 0;
+    sem_getvalue(&aeroporto->portoes, &portao);
+    printf("=> Aviao %lu acoplou portão %u\n", aviao->id, portao);
 }
 
 void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao) {
@@ -49,10 +55,11 @@ void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao) {
 
     while(1) {
         sem_t sem = aeroporto->esteiras[i];
-        int* tmp = 0;
-        sem_getvalue(&sem, tmp);
-        if (*tmp) {
+        int tmp = 0;
+        sem_getvalue(&sem, &tmp);
+        if (tmp) {
             sem_wait(&sem);
+            printf("-( Aviao %lu pegou esteira #%d\n", aviao->id, tmp);
             adicionar_bagagens_esteira(aeroporto, aviao);
             sem_post(&sem);
             break;
