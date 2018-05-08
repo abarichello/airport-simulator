@@ -110,23 +110,25 @@ int main(int argc, char** argv) {
     pthread_t thread_vector[100];
 
     long long tempo_inicial, tempo_final, tempo_total;
-    tempo_t proximo_aviao = rand() % t_novo_aviao_max + t_novo_aviao_min;
+    long long proximo_aviao = (rand() % t_novo_aviao_max + t_novo_aviao_min);
+    printf("%lld proximo aviao\n", proximo_aviao);
 
     int id = 0;
     tempo_inicial = current_timestamp();
 
     do {
         if (tempo_total >= proximo_aviao) {
-            int rnd = rand() % p_combustivel_max + p_combustivel_min;
-            aviao_t* aviao = aloca_aviao(rnd, id);
+            int fuel = rand() % p_combustivel_max + p_combustivel_min;
+            aviao_t* aviao = aloca_aviao(fuel, id);
+
             unidade_t* unidade = malloc(sizeof(unidade_t));
             unidade->aeroporto = meu_aeroporto;
             unidade->aviao = aviao;
             pthread_create(&thread_vector[id++], NULL, thread_aviao, (void*)unidade);
-            proximo_aviao = tempo_total + rand() % t_novo_aviao_max + t_novo_aviao_min;
+            proximo_aviao = tempo_total + (rand() % t_novo_aviao_max + t_novo_aviao_min); // algo ta dando ruim
         }
         tempo_final = current_timestamp();
-        tempo_total = difftime(tempo_final, tempo_inicial);
+        tempo_total = tempo_final - tempo_inicial;
     } while (tempo_total < t_simulacao);
 
     finalizar_aeroporto(meu_aeroporto);
