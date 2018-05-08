@@ -1,6 +1,5 @@
 #include "aeroporto.h"
 
-
 aeroporto_t* iniciar_aeroporto(size_t* args, size_t n_args) {
     aeroporto_t* aeroporto = malloc(sizeof(aeroporto_t));
     aeroporto->n_pistas = args[0];
@@ -39,7 +38,7 @@ void pousar_aviao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->pistas);
     printf(" = Aviao %lu pousou.\n", aviao->id);
     remover(aeroporto->fila_pouso);
-    // sleep(aeroporto->t_pouso_decolagem);
+    usleep(aeroporto->t_pouso_decolagem * 1000);
     sem_post(&aeroporto->pistas);
 }
 
@@ -47,7 +46,7 @@ void acoplar_portao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->portoes);
     int portao = 0;
     sem_getvalue(&aeroporto->portoes, &portao);
-    printf("=> Aviao %lu acoplou portão %u\n", aviao->id, portao);
+    printf("=> Aviao %lu acoplou portão %u.\n", aviao->id, portao);
 }
 
 void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao) {
@@ -59,7 +58,7 @@ void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao) {
         sem_getvalue(&sem, &tmp);
         if (tmp) {
             sem_wait(&sem);
-            printf("-( Aviao %lu pegou esteira #%d\n", aviao->id, tmp);
+            printf("-( Aviao %lu pegou esteira #%d.\n", aviao->id, tmp);
             adicionar_bagagens_esteira(aeroporto, aviao);
             sem_post(&sem);
             break;
@@ -75,14 +74,17 @@ void transportar_bagagens(aeroporto_t* aeroporto, aviao_t* aviao) {
 }
 
 void adicionar_bagagens_esteira(aeroporto_t* aeroporto, aviao_t* aviao) {
-    sleep(aeroporto->t_inserir_bagagens);
-    sleep(aeroporto->t_bagagens_esteira);
-    sleep(aeroporto->t_remover_bagagens);
+    printf(" ( Aviao %lu inserindo bagagens.\n", aviao->id);
+    usleep(aeroporto->t_inserir_bagagens * 1000);
+    usleep(aeroporto->t_bagagens_esteira * 1000);
+    usleep(aeroporto->t_remover_bagagens * 1000);
+    printf(" ) Aviao %lu removendo bagagens.\n", aviao->id);
 }
 
 void decolar_aviao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->pistas);
-    sleep(aeroporto->t_pouso_decolagem);
+    printf(" < Aviao %lu decolando.\n", aviao->id);
+    usleep(aeroporto->t_pouso_decolagem * 1000);
     free(aviao);
     sem_post(&aeroporto->pistas);
 }

@@ -10,7 +10,7 @@
 #define TEMPO_REMOVER_BAGAGENS 90
 #define TEMPO_INSERIR_BAGAGENS 110
 #define TEMPO_BAGAGENS_ESTEIRA 200
-#define TEMPO_SIMULACAO 1000
+#define TEMPO_SIMULACAO 10000
 
 typedef struct {
     aeroporto_t* aeroporto;
@@ -26,6 +26,13 @@ void* thread_aviao(void* arg) {
     adicionar_bagagens_esteira(unidade->aeroporto, unidade->aviao);
     decolar_aviao(unidade->aeroporto, unidade->aviao);
     return 0;
+}
+
+long long current_timestamp() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    long long milliseconds = tv.tv_sec * 1000LL + tv.tv_usec / 1000LL;
+    return milliseconds;
 }
 
 int main(int argc, char** argv) {
@@ -102,25 +109,26 @@ int main(int argc, char** argv) {
     aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
     pthread_t thread_vector[100];
 
-    tempo_t tempo = 0;
-    tempo_t tempo_loop = 0;
+    long long tempo_inicial, tempo_final, tempo_total;
     tempo_t proximo_aviao = rand() % t_novo_aviao_max + t_novo_aviao_min;
 
     int id = 0;
-    while (tempo < t_simulacao) {
-        if (tempo_loop >= proximo_aviao) {
+    tempo_inicial = current_timestamp();
+
+    do {
+        if (tempo_total >= proximo_aviao) {
             int rnd = rand() % p_combustivel_max + p_combustivel_min;
             aviao_t* aviao = aloca_aviao(rnd, id);
             unidade_t* unidade = malloc(sizeof(unidade_t));
             unidade->aeroporto = meu_aeroporto;
             unidade->aviao = aviao;
             pthread_create(&thread_vector[id++], NULL, thread_aviao, (void*)unidade);
-            proximo_aviao = tempo_loop + rand() % t_novo_aviao_max + t_novo_aviao_min;
+            proximo_aviao = tempo_total + rand() % t_novo_aviao_max + t_novo_aviao_min;
         }
-        tempo_loop++;
-        tempo++;
-    }
+        tempo_final = current_timestamp();
+        tempo_total = difftime(tempo_final, tempo_inicial);
+    } while (tempo_total < t_simulacao);
 
     finalizar_aeroporto(meu_aeroporto);
-    return 0;
+    return 1;
 }
