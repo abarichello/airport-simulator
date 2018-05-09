@@ -127,10 +127,8 @@ int main(int argc, char** argv) {
         }
         tempo_final = current_timestamp();
         tempo_total = tempo_final - tempo_inicial;
-    // printf("%d\n", tempo_total);
     } while (tempo_total < t_simulacao);
 
-    printf("=== Fim da simulação ===\n");
     finalizar_aeroporto(meu_aeroporto);
     return 1;
 }
