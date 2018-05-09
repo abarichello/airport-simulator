@@ -36,7 +36,7 @@ void aproximacao_aeroporto(aeroporto_t* aeroporto, aviao_t* aviao) {
 
 void pousar_aviao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->pistas);
-    printf(" = Aviao %lu pousou.\n", aviao->id);
+    printf("-> Aviao %lu pousou.\n", aviao->id);
     remover(aeroporto->fila_pouso);
     usleep(aeroporto->t_pouso_decolagem * 1000);
     sem_post(&aeroporto->pistas);
@@ -77,13 +77,13 @@ void adicionar_bagagens_esteira(aeroporto_t* aeroporto, aviao_t* aviao) {
     printf(" ( Aviao %lu inserindo bagagens.\n", aviao->id);
     usleep(aeroporto->t_inserir_bagagens * 1000);
     usleep(aeroporto->t_bagagens_esteira * 1000);
-    usleep(aeroporto->t_remover_bagagens * 1000);
     printf(" ) Aviao %lu removendo bagagens.\n", aviao->id);
+    usleep(aeroporto->t_remover_bagagens * 1000);
 }
 
 void decolar_aviao(aeroporto_t* aeroporto, aviao_t* aviao) {
     sem_wait(&aeroporto->pistas);
-    printf(" < Aviao %lu decolando.\n", aviao->id);
+    printf(" <-Aviao %lu decolando.\n", aviao->id);
     usleep(aeroporto->t_pouso_decolagem * 1000);
     free(aviao);
     sem_post(&aeroporto->pistas);
